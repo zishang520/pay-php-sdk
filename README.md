@@ -30,6 +30,7 @@ PHP支付SDK（微信支付 + 支付宝支付）
 $config = [
     // 微信支付参数
     'wechat' => [
+        'debug'      => false, // 沙箱模式
         'app_id'     => '', // 应用ID
         'mch_id'     => '', // 微信支付商户号
         'mch_key'    => '', // 微信支付密钥
@@ -39,6 +40,7 @@ $config = [
     ],
     // 支付宝支付参数
     'alipay' => [
+        'debug'       => false, // 沙箱模式
         'app_id'      => '', // 应用ID
         'public_key'  => '', // 支付宝公钥(1行填写)
         'private_key' => '', // 支付宝私钥(1行填写)
