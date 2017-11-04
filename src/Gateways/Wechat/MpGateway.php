@@ -37,9 +37,6 @@ class MpGateway extends Wechat
      */
     public function apply(array $options = [])
     {
-        if (is_null($this->userConfig->get('app_id'))) {
-            throw new InvalidArgumentException('Missing Config -- [app_id]');
-        }
         $payRequest = [
             'appId'     => $this->userConfig->get('app_id'),
             'timeStamp' => time() . '',

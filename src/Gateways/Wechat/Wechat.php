@@ -79,6 +79,15 @@ abstract class Wechat extends GatewayInterface
     public function __construct(array $config)
     {
         $this->userConfig = new Config($config);
+        if (is_null($this->userConfig->get('app_id'))) {
+            throw new InvalidArgumentException('Missing Config -- [app_id]');
+        }
+        if (is_null($this->userConfig->get('mch_id'))) {
+            throw new InvalidArgumentException('Missing Config -- [mch_id]');
+        }
+        if (is_null($this->userConfig->get('mch_key'))) {
+            throw new InvalidArgumentException('Missing Config -- [mch_key]');
+        }
         // 沙箱模式
         if (!empty($config['debug'])) {
             $this->gateway = 'https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder';

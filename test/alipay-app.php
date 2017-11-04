@@ -17,7 +17,7 @@ $config = require(__DIR__ . '/config.php');
 
 // 支付参数
 $payOrder = [
-    'out_trade_no' => '', // 商户订单号
+    'out_trade_no' => '41234123', // 商户订单号
     'total_amount' => '1', // 支付金额
     'subject'      => 'test subject', // 支付订单描述
 ];

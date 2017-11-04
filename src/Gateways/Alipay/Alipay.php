@@ -53,6 +53,10 @@ abstract class Alipay extends GatewayInterface
         if (is_null($this->userConfig->get('app_id'))) {
             throw new InvalidArgumentException('Missing Config -- [app_id]');
         }
+        // 沙箱模式
+        if (!empty($config['debug'])) {
+            $this->gateway = 'https://openapi.alipaydev.com/gateway.do';
+        }
         $this->config = [
             'app_id'      => $this->userConfig->get('app_id'),
             'method'      => '',

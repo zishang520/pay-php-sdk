@@ -17,9 +17,10 @@ $config = require(__DIR__ . '/config.php');
 
 // 支付参数
 $payOrder = [
-    'out_trade_no' => '', // 商户订单号
-    'total_amount' => '1', // 支付金额
-    'subject'      => 'test subject', // 支付订单描述
+    'out_trade_no' => '4312412343', // 订单号
+    'total_amount' => '13', // 订单金额，单位：元
+    'subject'      => '订单商品标题', // 订单商品标题
+    'auth_code'    => '123456', // 授权码
 ];
 
 // 实例支付对象

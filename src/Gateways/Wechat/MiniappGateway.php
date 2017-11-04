@@ -38,9 +38,6 @@ class MiniappGateway extends Wechat
      */
     public function apply(array $options = [])
     {
-        if (is_null($this->userConfig->get('app_id'))) {
-            throw new InvalidArgumentException('Missing Config -- [app_id]');
-        }
         $this->config['appid'] = $this->userConfig->get('app_id');
         $payRequest = [
             'appId'     => $this->config['appid'],

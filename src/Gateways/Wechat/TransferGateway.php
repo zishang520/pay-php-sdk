@@ -13,7 +13,6 @@
 namespace Pay\Gateways\Wechat;
 
 use Pay\Exceptions\GatewayException;
-use Pay\Exceptions\InvalidArgumentException;
 
 /**
  * 微信企业打款网关
@@ -40,9 +39,6 @@ class TransferGateway extends Wechat
      */
     public function apply(array $options = [])
     {
-        if (is_null($this->userConfig->get('app_id'))) {
-            throw new InvalidArgumentException('Missing Config -- [app_id]');
-        }
         $options['mchid'] = $this->config['mch_id'];
         $options['mch_appid'] = $this->userConfig->get('app_id');
         unset($this->config['appid']);

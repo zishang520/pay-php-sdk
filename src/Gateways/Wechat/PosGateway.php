@@ -38,9 +38,6 @@ class PosGateway extends Wechat
      */
     public function apply(array $options = [])
     {
-        if (is_null($this->userConfig->get('app_id'))) {
-            throw new InvalidArgumentException('Missing Config -- [app_id]');
-        }
         unset($this->config['trade_type']);
         unset($this->config['notify_url']);
         $this->gateway = $this->gateway_micropay;
