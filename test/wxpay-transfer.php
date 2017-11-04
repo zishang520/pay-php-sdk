@@ -17,11 +17,11 @@ $config = require(__DIR__ . '/config.php');
 
 // 支付参数
 $payOrder = [
-    'partner_trade_no' => '', //商户订单号
-    'openid'           => '', //收款人的openid
+    'partner_trade_no' => '42134122', //商户订单号
+    'openid'           => 'ol0Q_uJUcrb1DOjmQRycmSpLjRmo', //收款人的openid
     'check_name'       => 'NO_CHECK', //NO_CHECK：不校验真实姓名\FORCE_CHECK：强校验真实姓名
-//    're_user_name'=>'张三', //check_name为 FORCE_CHECK 校验实名的时候必须提交
-    'amount'           => 100, //企业付款金额，单位为分
+    // 're_user_name'     => '张三', //check_name为 FORCE_CHECK 校验实名的时候必须提交
+    'amount'           => '101', //企业付款金额，单位为分
     'desc'             => '帐户提现', //付款说明
     'spbill_create_ip' => '192.168.0.1', //发起交易的IP地址
 ];
@@ -31,9 +31,9 @@ $pay = new \Pay\Pay($config);
 
 try {
     $options = $pay->driver('wechat')->gateway('transfer')->apply($payOrder);
-    var_dump($options);
+    var_export($options);
 } catch (Exception $e) {
-    echo "创建订单失败，" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 

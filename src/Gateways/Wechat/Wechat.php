@@ -14,6 +14,7 @@ namespace Pay\Gateways\Wechat;
 
 use Pay\Contracts\Config;
 use Pay\Contracts\GatewayInterface;
+use Pay\Exceptions\Exception;
 use Pay\Exceptions\GatewayException;
 use Pay\Exceptions\InvalidArgumentException;
 
@@ -56,12 +57,47 @@ abstract class Wechat extends GatewayInterface
     protected $gateway_refund = 'https://api.mch.weixin.qq.com/secapi/pay/refund';
 
     /**
+     * @var string
+     */
+    protected $gateway_transfer = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
+
+    /**
+     * @var string
+     */
+    protected $gateway_micropay = 'https://api.mch.weixin.qq.com/pay/micropay';
+
+    /**
+     * @var string
+     */
+    protected $gateway_statement = ' https://api.mch.weixin.qq.com/pay/downloadbill';
+
+    /**
      * Wechat constructor.
      * @param array $config
+     * @throws Exception
      */
     public function __construct(array $config)
     {
         $this->userConfig = new Config($config);
+        // 沙箱模式
+        if (!empty($config['debug'])) {
+            $this->gateway = 'https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder';
+            $this->gateway_query = 'https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery';
+            $this->gateway_close = 'https://api.mch.weixin.qq.com/sandboxnew/pay/closeorder';
+            $this->gateway_refund = 'https://api.mch.weixin.qq.com/sandboxnew/secapi/pay/refund';
+            $this->gateway_transfer = 'https://api.mch.weixin.qq.com/sandboxnew/mmpaymkttransfers/promotion/transfers';
+            $this->gateway_micropay = 'https://api.mch.weixin.qq.com/sandboxnew/pay/micropay';
+            $this->gateway_statement = ' https://api.mch.weixin.qq.com/sandboxnew/pay/downloadbill';
+            // 沙箱验证签名及沙箱密钥更新
+            $data = array('mch_id' => $this->userConfig->get('mch_id', ''), 'nonce_str' => $this->createNonceStr('32'));
+            $data['sign'] = $this->getSign($data);
+            $result = $this->fromXml($this->post('https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey', $this->toXml($data)));
+            if (isset($result['return_code']) && $result['return_code'] === 'SUCCESS') {
+                $this->userConfig->set('mch_key', $result['sandbox_signkey']);
+            } else {
+                throw new Exception('沙箱验证签名及获取沙箱密钥失败！');
+            }
+        }
         $this->config = [
             'appid'      => $this->userConfig->get('app_id', ''),
             'mch_id'     => $this->userConfig->get('mch_id', ''),
@@ -129,12 +165,12 @@ abstract class Wechat extends GatewayInterface
     abstract protected function getTradeType();
 
     /**
-     * @param array $config_biz
+     * @param array $options
      * @return array
      */
-    protected function preOrder($config_biz = [])
+    protected function preOrder($options = [])
     {
-        $this->config = array_merge($this->config, $config_biz);
+        $this->config = array_merge($this->config, $options);
         return $this->getResult($this->gateway);
     }
 

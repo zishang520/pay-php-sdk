@@ -21,11 +21,6 @@ use Pay\Exceptions\InvalidArgumentException;
  */
 class PosGateway extends Wechat
 {
-    /**
-     * 接口地址
-     * @var string
-     */
-    protected $gateway = 'https://api.mch.weixin.qq.com/pay/micropay';
 
     /**
      * 当前操作类型
@@ -48,6 +43,7 @@ class PosGateway extends Wechat
         }
         unset($this->config['trade_type']);
         unset($this->config['notify_url']);
+        $this->gateway = $this->gateway_micropay;
         return $this->preOrder($options);
     }
 

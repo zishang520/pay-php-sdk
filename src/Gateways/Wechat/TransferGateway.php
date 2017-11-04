@@ -22,11 +22,6 @@ use Pay\Exceptions\InvalidArgumentException;
  */
 class TransferGateway extends Wechat
 {
-    /**
-     * 接口地址
-     * @var string
-     */
-    protected $gateway = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
 
     /**
      * 当前操作类型
@@ -57,9 +52,9 @@ class TransferGateway extends Wechat
         unset($this->config['notify_url']);
         $this->config = array_merge($this->config, $options);
         $this->config['sign'] = $this->getSign($this->config);
+        var_export($this->config);
         $data = $this->fromXml($this->post(
-            $this->gateway,
-            $this->toXml($this->config),
+            $this->gateway_transfer, $this->toXml($this->config),
             ['ssl_cer' => $this->userConfig->get('ssl_cer', ''), 'ssl_key' => $this->userConfig->get('ssl_key', '')]
         ));
         if (!isset($data['return_code']) || $data['return_code'] !== 'SUCCESS' || $data['result_code'] !== 'SUCCESS') {
