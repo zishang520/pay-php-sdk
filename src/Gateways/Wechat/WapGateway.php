@@ -42,7 +42,6 @@ class WapGateway extends Wechat
             throw new InvalidArgumentException('Missing Config -- [app_id]');
         }
         list($data, $return_url) = [$this->preOrder($options), $this->userConfig->get('return_url')];
-        var_export([$data, $return_url]);
         return is_null($return_url) ? $data['mweb_url'] : $data['mweb_url'] . '&redirect_url=' . urlencode($return_url);
     }
 }
