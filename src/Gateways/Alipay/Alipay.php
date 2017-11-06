@@ -136,9 +136,7 @@ abstract class Alipay extends GatewayInterface
             throw new InvalidArgumentException('Missing Config -- [public_key]');
         }
         $sign = is_null($sign) ? $data['sign'] : $sign;
-        $res = "-----BEGIN PUBLIC KEY-----\n" .
-            wordwrap($this->userConfig->get('public_key'), 64, "\n", true) .
-            "\n-----END PUBLIC KEY-----";
+        $res = "-----BEGIN PUBLIC KEY-----\n" . wordwrap($this->userConfig->get('public_key'), 64, "\n", true) . "\n-----END PUBLIC KEY-----";
         $toVerify = $sync ? json_encode($data) : $this->getSignContent($data, true);
         return openssl_verify($toVerify, base64_decode($sign), $res, OPENSSL_ALGO_SHA256) === 1 ? $data : false;
     }
@@ -183,7 +181,7 @@ abstract class Alipay extends GatewayInterface
         $method = str_replace('.', '_', $method) . '_response';
         $data = json_decode($this->post($this->gateway, $this->config), true);
         if (!isset($data[$method]['code']) || $data[$method]['code'] !== '10000') {
-            throw new GatewayException('GetResultError:' . $data[$method]['msg'] . ' - ' . $data[$method]['sub_code'], $data[$method]['code'], $data);
+            throw new GatewayException("GetResultError:{$data[$method]['msg']} - {$data[$method]['sub_code']}[{$data[$method]['sub_msg']}]", $data[$method]['code'], $data);
         }
         return $this->verify($data[$method], $data['sign'], true);
     }
