@@ -20,7 +20,6 @@ return [
         'ssl_cer'    => __DIR__ . '/cert/1300513101_cert.pem', // 微信证书 cert 文件
         'ssl_key'    => __DIR__ . '/cert/1300513101_key.pem', // 微信证书 key 文件
         'notify_url' => 'http://localhost/wxpay-notify.php', // 支付通知URL
-        'return_url' => 'http://localhost/wxpay-notify.php', // WEB支付成功后返回地址
     ],
     // 支付宝支付参数
     'alipay' => [

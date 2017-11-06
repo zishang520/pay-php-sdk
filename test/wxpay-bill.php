@@ -17,10 +17,9 @@ $config = require(__DIR__ . '/config.php');
 
 // 支付参数
 $payOrder = [
-    'out_trade_no'     => '45235', // 订单号
-    'total_fee'        => '101', // 订单金额，**单位：分**
-    'body'             => '测试', // 订单描述
-    'spbill_create_ip' => '127.0.0.1', // 支付人的 IP
+    'bill_date' => '20171006', // 对账单日期
+    'bill_type' => 'ALL', // 账单类型
+    // 'tar_type'  => 'GZIP', // 压缩账单
 ];
 
 // 实例支付对象
@@ -28,10 +27,10 @@ $pay = new \Pay\Pay($config);
 
 try {
     echo '<pre>';
-    $options = $pay->driver('wechat')->gateway('app')->apply($payOrder);
+    $options = $pay->driver('wechat')->gateway('bill')->apply($payOrder);
     var_export($options);
 } catch (Exception $e) {
-    echo "创建订单失败，" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 

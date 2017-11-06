@@ -69,7 +69,7 @@ abstract class Wechat extends GatewayInterface
     /**
      * @var string
      */
-    protected $gateway_statement = ' https://api.mch.weixin.qq.com/pay/downloadbill';
+    protected $gateway_bill = 'https://api.mch.weixin.qq.com/pay/downloadbill';
 
     /**
      * Wechat constructor.
@@ -96,7 +96,7 @@ abstract class Wechat extends GatewayInterface
             $this->gateway_refund = 'https://api.mch.weixin.qq.com/sandboxnew/secapi/pay/refund';
             $this->gateway_transfer = 'https://api.mch.weixin.qq.com/sandboxnew/mmpaymkttransfers/promotion/transfers';
             $this->gateway_micropay = 'https://api.mch.weixin.qq.com/sandboxnew/pay/micropay';
-            $this->gateway_statement = ' https://api.mch.weixin.qq.com/sandboxnew/pay/downloadbill';
+            $this->gateway_bill = 'https://api.mch.weixin.qq.com/sandboxnew/pay/downloadbill';
             // 沙箱验证签名及沙箱密钥更新
             $data = array('mch_id' => $this->userConfig->get('mch_id', ''), 'nonce_str' => $this->createNonceStr('32'));
             $data['sign'] = $this->getSign($data);

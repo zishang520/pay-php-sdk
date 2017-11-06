@@ -13,11 +13,11 @@
 namespace Pay\Gateways\Wechat;
 
 /**
- * 微信App支付网关
- * Class AppGateway
+ * 下载微信电子面单
+ * Class BillGateway
  * @package Pay\Gateways\Wechat
  */
-class AppGateway extends Wechat
+class BillGateway extends Wechat
 {
 
     /**
@@ -26,26 +26,20 @@ class AppGateway extends Wechat
      */
     protected function getTradeType()
     {
-        return 'APP';
+        return '';
     }
 
     /**
      * 应用并返回参数
      * @param array $options
-     * @return array
+     * @return bool|string
      */
-    public function apply(array $options = [])
+    public function apply(array $options)
     {
-        $payRequest = [
-            'appid'     => $this->userConfig->get('app_id'),
-            'partnerid' => $this->userConfig->get('mch_id'),
-            'prepayid'  => $this->preOrder($options)['prepay_id'],
-            'timestamp' => time() . '',
-            'noncestr'  => $this->createNonceStr(),
-            'package'   => 'Sign=WXPay',
-        ];
-        $payRequest['sign'] = $this->getSign($payRequest);
-        return $payRequest;
+        unset($this->config['trade_type']);
+        unset($this->config['notify_url']);
+        $this->config = array_merge($this->config, $options);
+        $this->config['sign'] = $this->getSign($this->config);
+        return $this->post($this->gateway_bill, $this->toXml($this->config));
     }
-
 }
