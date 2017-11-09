@@ -26,5 +26,14 @@ if ($pay->driver('alipay')->gateway()->verify($_POST)) {
     file_put_contents('notify.txt', "收到异步通知\r\n", FILE_APPEND);
 }
 
-echo "success";
 
+// 下面是项目的真实代码
+/*
+$pay = new \Pay\Pay(config('pay'));
+$notifyInfo = $pay->driver('alipay')->gateway('app')->verify(request()->post('', '', null));
+p($notifyInfo, false, RUNTIME_PATH . date('Ymd') . '_notify.txt');
+if (in_array($notifyInfo['trade_status'], ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {
+    // 更新订单状态
+    $this->updateOrder($notifyInfo['out_trade_no'], $notifyInfo['trade_no'], $notifyInfo['receipt_amount'], 'alipay');
+}
+*/

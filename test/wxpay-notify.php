@@ -10,14 +10,12 @@
 // | github开源项目：https://github.com/zoujingli/pay-php-sdk
 // +----------------------------------------------------------------------
 
-use Pay\Pay;
-
 include '../init.php';
 
 // 加载配置参数
 $config = require(__DIR__ . '/config.php');
 
-$pay = new Pay($config);
+$pay = new Pay\Pay($config);
 $verify = $pay->driver('wechat')->gateway('mp')->verify(file_get_contents('php://input'));
 
 if ($verify) {
@@ -29,3 +27,16 @@ if ($verify) {
 }
 
 echo "success";
+
+// 下面是项目的真实代码
+/*
+$pay = new Pay\Pay($config);
+$notifyInfo = $pay->driver('wechat')->gateway('mp')->verify(file_get_contents('php://input'));
+// 支付通知数据获取成功
+if ($notifyInfo['result_code'] == 'SUCCESS' && $notifyInfo['return_code'] == 'SUCCESS') {
+    $order_no = substr($notifyInfo['out_trade_no'], 0, 10);
+    // 更新订单状态
+    $this->updateOrder($order_no, $notifyInfo['transaction_id'], $notifyInfo['cash_fee'] / 100, 'wechat');
+}
+echo 'success';
+*/
