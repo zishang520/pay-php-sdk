@@ -6,21 +6,21 @@ PHP支付SDK（微信支付 + 支付宝支付）
 [![Latest Unstable Version](https://poser.pugx.org/zoujingli/pay-php-sdk/v/unstable)](https://packagist.org/packages/zoujingli/pay-php-sdk)
 [![License](https://poser.pugx.org/zoujingli/pay-php-sdk/license)](https://packagist.org/packages/zoujingli/pay-php-sdk)
 
-欢迎 Star，欢迎 Fork！
+欢迎`Star`，欢迎`Fork`！
 
 ## 特点
 - 代码简洁，无需加载多余组件，可应用于任何平台或框架
 - 隐藏开发者不需要关注的细节，完全内部实现
-- 根据支付宝、微信最新 API 开发集成
-- 高度抽象的类，免去各种拼json与xml的痛苦
-- 符合 PSR 标准，你可以各种方便的与你的框架集成
+- 根据支付宝、微信最新`API`开发集成
+- 高度抽象的类，免去各种拼`json`与`xml`的痛苦
+- 符合`PSR`标准，你可以各种方便的与你的框架集成
 - 文件结构清晰易理解，可以随心所欲添加本项目中没有的支付网关
 - 方法使用更优雅，不必再去研究那些奇怪的的方法名或者类名是做啥用的
 
 ## 声明
 - 代码与框架部分参考于互联网开源项目
-- SDK全部源码基于MIT协议开源，完全免费
-- **开发交流QQ群：513350915（新）**
+- `SDK`全部源码基于`MIT`协议开源，完全免费
+- **开发交流`QQ`群：513350915（新）**
 
 若对您有帮助，可以**赞助**支持下作者哦！
 ----
