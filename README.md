@@ -96,13 +96,13 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 
 所有网关均支持以下方法
 
-- pay(array $options)  
-说明：支付接口  
+- apply(array $options)  
+说明：支付发起接口  
 参数：数组类型，订单业务配置项，包含 订单号，订单金额等  
 返回：mixed 详情请看「支付网关配置说明与返回值」一节。 
 
 - refund(array|string $options, $refund_amount = null)  
-说明：退款接口  
+说明：发起退款接口  
 参数：`$options` 为字符串类型仅对`支付宝支付`有效，此时代表订单号，第二个参数为退款金额。  
 返回：mixed  退款成功，返回 服务器返回的数组；否则返回 false；  
 
