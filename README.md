@@ -76,6 +76,7 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 | alipay | app     | APP 支付  |
 | alipay | pos     | 刷卡支付  |
 | alipay | scan    | 扫码支付  |
+| alipay | bill    | 电子账单  |
 | alipay | transfer    | 帐户转账（可用于平台用户提现）  |
 
 ### 2、微信
@@ -86,11 +87,12 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 | :----: | :-----: | :-------: |
 | wechat | mp      | 公众号支付  |
 | wechat | miniapp | 小程序支付  |
-| wechat | wap     | H5 支付    |
+| wechat | wap     | H5 支付     |
 | wechat | scan    | 扫码支付    |
 | wechat | pos     | 刷卡支付    |
-| wechat | app     | APP 支付  |
-| wechat | transfer     | 企业付款  |
+| wechat | app     | APP 支付   |
+| wechat | bill    | 电子账单   |
+| wechat | transfer  | 企业付款  |
 
 ## 操作
 
