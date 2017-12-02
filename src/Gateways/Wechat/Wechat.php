@@ -14,6 +14,7 @@ namespace Pay\Gateways\Wechat;
 
 use Pay\Contracts\Config;
 use Pay\Contracts\GatewayInterface;
+use Pay\Contracts\HttpService;
 use Pay\Exceptions\Exception;
 use Pay\Exceptions\GatewayException;
 use Pay\Exceptions\InvalidArgumentException;
@@ -98,14 +99,19 @@ abstract class Wechat extends GatewayInterface
             $this->gateway_micropay = 'https://api.mch.weixin.qq.com/sandboxnew/pay/micropay';
             $this->gateway_bill = 'https://api.mch.weixin.qq.com/sandboxnew/pay/downloadbill';
             // 沙箱验证签名及沙箱密钥更新
-            $data = array('mch_id' => $this->userConfig->get('mch_id', ''), 'nonce_str' => $this->createNonceStr('32'));
-            $data['sign'] = $this->getSign($data);
-            $result = $this->fromXml($this->post('https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey', $this->toXml($data)));
-            if (isset($result['return_code']) && $result['return_code'] === 'SUCCESS') {
-                $this->userConfig->set('mch_key', $result['sandbox_signkey']);
-            } else {
-                throw new Exception('沙箱验证签名及获取沙箱密钥失败！');
+            $sandbox_signkey = HttpService::getCache('sandbox_signkey');
+            if (empty($sandbox_signkey)) {
+                $data = ['mch_id' => $this->userConfig->get('mch_id', ''), 'nonce_str' => $this->createNonceStr('32')];
+                $data['sign'] = $this->getSign($data);
+                $result = $this->fromXml($this->post('https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey', $this->toXml($data)));
+                if (isset($result['return_code']) && $result['return_code'] === 'SUCCESS') {
+                    $sandbox_signkey = $result['sandbox_signkey'];
+                    HttpService::setCache('sandbox_signkey', $sandbox_signkey);
+                } else {
+                    throw new Exception('沙箱验证签名及获取沙箱密钥失败！');
+                }
             }
+            $this->userConfig->set('mch_key', $sandbox_signkey);
         }
         $this->config = [
             'appid'      => $this->userConfig->get('app_id', ''),
@@ -121,6 +127,7 @@ abstract class Wechat extends GatewayInterface
      * 订单退款操作
      * @param array $options
      * @return array
+     * @throws GatewayException
      */
     public function refund($options = [])
     {
@@ -134,6 +141,7 @@ abstract class Wechat extends GatewayInterface
      * 关闭正在进行的订单
      * @param string $out_trade_no
      * @return array
+     * @throws GatewayException
      */
     public function close($out_trade_no = '')
     {
@@ -146,6 +154,7 @@ abstract class Wechat extends GatewayInterface
      * 查询订单状态
      * @param string $out_trade_no
      * @return array
+     * @throws GatewayException
      */
     public function find($out_trade_no = '')
     {
@@ -176,6 +185,7 @@ abstract class Wechat extends GatewayInterface
     /**
      * @param array $options
      * @return array
+     * @throws GatewayException
      */
     protected function preOrder($options = [])
     {

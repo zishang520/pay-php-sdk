@@ -21,6 +21,12 @@ class HttpService
 {
 
     /**
+     * 缓存路径
+     * @var null
+     */
+    public static $cachePath = null;
+
+    /**
      * 以get访问模拟访问
      * @param string $url 访问URL
      * @param array $query GET数
@@ -108,5 +114,49 @@ class HttpService
             }
         }
         return $data;
+    }
+
+    /**
+     * 缓存配置与存储
+     * @param string $name 缓存名称
+     * @param string $value 缓存内容
+     * @param int $expired 缓存时间(0表示永久缓存)
+     * @return bool
+     */
+    public static function setCache($name, $value = '', $expired = 3600)
+    {
+        $cachepath = empty(self::$cachePath) ? self::$cachePath : dirname(__DIR__) . '/Cache/';
+        file_exists($cachepath) || mkdir($cachepath, 0755, true);
+        $cachestri = serialize(['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)]);
+        return file_put_contents($cachepath . md5($name), $cachestri);
+    }
+
+    /**
+     * 获取缓存内容
+     * @param string $name 缓存名称
+     * @return null|mixed
+     */
+    public static function getCache($name)
+    {
+        $cachefile = (empty(self::$cachePath) ? self::$cachePath : dirname(__DIR__) . '/Cache/') . md5($name);
+        if (file_exists($cachefile) && ($content = file_get_contents($cachefile))) {
+            $data = unserialize($content);
+            if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
+                return $data['value'];
+            }
+            self::delCache($name);
+        }
+        return null;
+    }
+
+    /**
+     * 移除缓存文件
+     * @param string $name 缓存名称
+     * @return bool
+     */
+    public static function delCache($name)
+    {
+        $cachefile = (empty(self::$cachePath) ? self::$cachePath : dirname(__DIR__) . '/Cache/') . md5($name);
+        return file_exists($cachefile) ? unlink($cachefile) : true;
     }
 }
