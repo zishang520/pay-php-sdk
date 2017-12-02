@@ -43,6 +43,7 @@ class PosGateway extends Alipay
      * @param array $options
      * @param string $scene
      * @return array|bool
+     * @throws \Pay\Exceptions\GatewayException
      */
     public function apply(array $options = [], $scene = 'bar_code')
     {

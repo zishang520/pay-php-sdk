@@ -94,6 +94,7 @@ abstract class Alipay extends GatewayInterface
      * @param array|string $options 退款参数或退款商户订单号
      * @param null $refund_amount 退款金额
      * @return array|bool
+     * @throws GatewayException
      */
     public function refund($options, $refund_amount = null)
     {
@@ -105,8 +106,9 @@ abstract class Alipay extends GatewayInterface
 
     /**
      * 关闭支付宝进行中的订单
-     * @param $options
+     * @param array|string $options
      * @return array|bool
+     * @throws GatewayException
      */
     public function close($options)
     {
@@ -120,6 +122,7 @@ abstract class Alipay extends GatewayInterface
      * 查询支付宝订单状态
      * @param string $out_trade_no
      * @return array|bool
+     * @throws GatewayException
      */
     public function find($out_trade_no = '')
     {

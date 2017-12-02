@@ -33,6 +33,7 @@ class WapGateway extends Wechat
      * 应用并生成参数
      * @param array $options
      * @return string
+     * @throws \Pay\Exceptions\GatewayException
      */
     public function apply(array $options = [])
     {

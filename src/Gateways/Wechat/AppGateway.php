@@ -33,6 +33,7 @@ class AppGateway extends Wechat
      * 应用并返回参数
      * @param array $options
      * @return array
+     * @throws \Pay\Exceptions\GatewayException
      */
     public function apply(array $options = [])
     {

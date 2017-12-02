@@ -12,8 +12,6 @@
 
 namespace Pay\Gateways\Wechat;
 
-use Pay\Exceptions\InvalidArgumentException;
-
 /**
  * 微信POS刷卡支付网关
  * Class PosGateway
@@ -35,6 +33,7 @@ class PosGateway extends Wechat
      * 应用并返回参数
      * @param array $options
      * @return array
+     * @throws \Pay\Exceptions\GatewayException
      */
     public function apply(array $options = [])
     {

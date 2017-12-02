@@ -12,8 +12,6 @@
 
 namespace Pay\Gateways\Wechat;
 
-use Pay\Exceptions\InvalidArgumentException;
-
 /**
  * 微信公众号支付网关
  * Class MpGateway
@@ -34,6 +32,7 @@ class MpGateway extends Wechat
      * 设置并返回参数
      * @param array $options
      * @return array
+     * @throws \Pay\Exceptions\GatewayException
      */
     public function apply(array $options = [])
     {
