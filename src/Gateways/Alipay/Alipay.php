@@ -15,6 +15,7 @@ namespace Pay\Gateways\Alipay;
 use InvalidArgumentException;
 use Pay\Contracts\Config;
 use Pay\Contracts\GatewayInterface;
+use Pay\Contracts\HttpService;
 use Pay\Exceptions\GatewayException;
 
 /**
@@ -52,6 +53,9 @@ abstract class Alipay extends GatewayInterface
         $this->userConfig = new Config($config);
         if (is_null($this->userConfig->get('app_id'))) {
             throw new InvalidArgumentException('Missing Config -- [app_id]');
+        }
+        if (!empty($config['cache_path'])) {
+            HttpService::$cachePath = $config['cache_path'];
         }
         // 沙箱模式
         if (!empty($config['debug'])) {

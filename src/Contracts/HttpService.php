@@ -125,7 +125,7 @@ class HttpService
      */
     public static function setCache($name, $value = '', $expired = 3600)
     {
-        $cachepath = empty(self::$cachePath) ? self::$cachePath : dirname(__DIR__) . '/Cache/';
+        $cachepath = self::_buildCachePath();
         file_exists($cachepath) || mkdir($cachepath, 0755, true);
         $cachestri = serialize(['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)]);
         return file_put_contents($cachepath . md5($name), $cachestri);
@@ -138,7 +138,7 @@ class HttpService
      */
     public static function getCache($name)
     {
-        $cachefile = (empty(self::$cachePath) ? self::$cachePath : dirname(__DIR__) . '/Cache/') . md5($name);
+        $cachefile = self::_buildCachePath() . md5($name);
         if (file_exists($cachefile) && ($content = file_get_contents($cachefile))) {
             $data = unserialize($content);
             if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
@@ -156,7 +156,16 @@ class HttpService
      */
     public static function delCache($name)
     {
-        $cachefile = (empty(self::$cachePath) ? self::$cachePath : dirname(__DIR__) . '/Cache/') . md5($name);
+        $cachefile = self::_buildCachePath() . md5($name);
         return file_exists($cachefile) ? unlink($cachefile) : true;
+    }
+
+    /**
+     * 应用缓存目录
+     * @return string
+     */
+    private static function _buildCachePath()
+    {
+        return empty(self::$cachePath) ? dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR : self::$cachePath;
     }
 }
