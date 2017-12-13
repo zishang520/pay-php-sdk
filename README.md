@@ -42,6 +42,7 @@ $config = [
         'ssl_cer'    => '', // 微信证书 cert 文件
         'ssl_key'    => '', // 微信证书 key 文件
         'notify_url' => '', // 支付通知URL
+        'cache_path' => '',// 缓存目录配置（沙箱模式需要用到）
     ],
     // 支付宝支付参数
     'alipay' => [
