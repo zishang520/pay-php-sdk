@@ -8,6 +8,8 @@ PHP支付SDK（微信支付 + 支付宝支付）
 
 欢迎`Star`，欢迎`Fork`！
 
+项目设计及部分源码参考于 [yansongda/pay](https://github.com/yansongda/pay)，在此特别感谢！
+
 ## 特点
 - 代码简洁，无需加载多余组件，可应用于任何平台或框架
 - 隐藏开发者不需要关注的细节，完全内部实现
@@ -93,7 +95,7 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 | wechat | pos     | 刷卡支付    |
 | wechat | app     | APP 支付   |
 | wechat | bill    | 电子账单   |
-| wechat | transfer  | 企业付款  |
+| wechat | transfer  | 企业付款（可用于平台用户提现）  |
 
 ## 操作
 
