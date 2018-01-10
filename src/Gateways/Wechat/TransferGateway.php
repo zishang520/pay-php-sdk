@@ -52,14 +52,17 @@ class TransferGateway extends Wechat
         $this->config['sign'] = $this->getSign($this->config);
         $data = $this->fromXml($this->post(
             $this->gateway_transfer, $this->toXml($this->config),
-            ['ssl_cer' => $this->userConfig->get('ssl_cer', ''), 'ssl_key' => $this->userConfig->get('ssl_key', '')]
+            [
+                'ssl_cer' => $this->userConfig->get('ssl_cer', ''),
+                'ssl_key' => $this->userConfig->get('ssl_key', ''),
+            ]
         ));
         if (!isset($data['return_code']) || $data['return_code'] !== 'SUCCESS' || $data['result_code'] !== 'SUCCESS') {
             $error = 'GetResultError:' . $data['return_msg'];
             $error .= isset($data['err_code_des']) ? ' - ' . $data['err_code_des'] : '';
         }
         if (isset($error)) {
-            throw new GatewayException($error, 20000, $data);
+            throw new GatewayException($error, 20001, $data);
         }
         return $data;
     }

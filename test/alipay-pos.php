@@ -28,7 +28,7 @@ $pay = new \Pay\Pay($config);
 
 try {
     $options = $pay->driver('alipay')->gateway('pos')->apply($payOrder);
-    var_dump($options);
+    var_export($options);
 } catch (Exception $e) {
     echo "创建订单失败，" . $e->getMessage();
 }

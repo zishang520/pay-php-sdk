@@ -29,7 +29,7 @@ $payOrder = [
 try {
     $options = $pay->driver('wechat')->gateway('transfer')->refund($payOrder);
     echo '<pre>';
-    var_dump($options);
+    var_export($options);
 } catch (Exception $e) {
     echo "创建订单失败，" . $e->getMessage();
 }
