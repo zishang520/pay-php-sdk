@@ -61,7 +61,7 @@ abstract class Alipay extends GatewayInterface
         }
         // 沙箱模式
         if (!empty($config['debug'])) {
-            $this->gateway = 'https://openapi.alipaydev.com/gateway.do';
+            $this->gateway = 'https://openapi.alipaydev.com/gateway.do?charset=utf-8';
         }
         $this->config = [
             'app_id'      => $this->userConfig->get('app_id'),
@@ -183,13 +183,19 @@ abstract class Alipay extends GatewayInterface
      */
     protected function getResult($options, $method)
     {
-        $this->config['biz_content'] = json_encode($options);
         $this->config['method'] = $method;
+        $this->config['biz_content'] = json_encode($options);
         $this->config['sign'] = $this->getSign();
         $method = str_replace('.', '_', $method) . '_response';
         $data = json_decode($this->post($this->gateway, $this->config), true);
         if (!isset($data[$method]['code']) || $data[$method]['code'] !== '10000') {
-            throw new GatewayException("GetResultError:{$data[$method]['msg']} - {$data[$method]['sub_code']}[{$data[$method]['sub_msg']}]", $data[$method]['code'], $data);
+            throw new GatewayException(
+                "\nResultError" .
+                "\n{$data[$method]['msg']}[{$data[$method]['code']}]" .
+                "\n{$data[$method]['sub_msg']}[{$data[$method]['sub_code']}]\n",
+                $data[$method]['code'],
+                $data
+            );
         }
         return $this->verify($data[$method], $data['sign'], true);
     }
