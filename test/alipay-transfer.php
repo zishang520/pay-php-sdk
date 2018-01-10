@@ -31,8 +31,9 @@ $payOrder = [
 
 try {
     $options = $pay->driver('alipay')->gateway('transfer')->apply($payOrder);
+    echo '<pre>';
     var_export($options);
 } catch (Exception $e) {
-    echo "创建订单失败，" . $e->getMessage();
+    echo $e->getMessage();
 }
 

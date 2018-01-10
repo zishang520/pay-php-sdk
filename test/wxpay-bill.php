@@ -28,6 +28,7 @@ $pay = new \Pay\Pay($config);
 try {
     echo '<pre>';
     $options = $pay->driver('wechat')->gateway('bill')->apply($payOrder);
+    echo '<pre>';
     var_export($options);
 } catch (Exception $e) {
     echo $e->getMessage();

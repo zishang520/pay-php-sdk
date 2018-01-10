@@ -30,7 +30,7 @@ try {
     $options = $pay->driver('alipay')->gateway('pos')->apply($payOrder);
     var_export($options);
 } catch (Exception $e) {
-    echo "创建订单失败，" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 
