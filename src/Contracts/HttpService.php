@@ -14,9 +14,11 @@
 
 namespace Pay\Contracts;
 
+use Pay\Exceptions\InvalidArgumentException;
+
 /**
  * 网络访问工具
- * Class Http
+ * Class HttpService
  * @package Pay\Contracts
  */
 class HttpService
@@ -79,13 +81,21 @@ class HttpService
             curl_setopt($curl, CURLOPT_HTTPHEADER, $options['headers']);
         }
         // 证书文件设置
-        if (!empty($options['ssl_cer']) && file_exists($options['ssl_cer'])) {
-            curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
+        if (!empty($options['ssl_cer'])) {
+            if (file_exists($options['ssl_cer'])) {
+                curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
+                curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
+            } else {
+                throw new InvalidArgumentException("Certificate files that do not exist. --- [{$options['ssl_cer']}]");
+            }
         }
-        if (!empty($options['ssl_key']) && file_exists($options['ssl_key'])) {
-            curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
+        if (!empty($options['ssl_key'])) {
+            if (file_exists($options['ssl_key'])) {
+                curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
+                curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
+            } else {
+                throw new InvalidArgumentException("Certificate files that do not exist. --- [{$options['ssl_key']}]");
+            }
         }
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
