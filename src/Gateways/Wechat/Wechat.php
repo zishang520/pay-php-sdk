@@ -30,6 +30,11 @@ abstract class Wechat extends GatewayInterface
 {
 
     /**
+     * @var bool
+     */
+    protected $debug = false;
+
+    /**
      * @var array
      */
     protected $config;
@@ -91,6 +96,7 @@ abstract class Wechat extends GatewayInterface
      */
     public function __construct(array $config)
     {
+        $this->debug = !empty($config['debug']);
         $this->userConfig = new Config($config);
         if (is_null($this->userConfig->get('app_id'))) {
             throw new InvalidArgumentException('Missing Config -- [app_id]');
@@ -106,16 +112,15 @@ abstract class Wechat extends GatewayInterface
         }
         // 沙箱模式
         if (!empty($config['debug'])) {
-
             $this->gateway = 'https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder';
+            $this->gateway_bill = 'https://api.mch.weixin.qq.com/sandboxnew/pay/downloadbill';
             $this->gateway_query = 'https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery';
             $this->gateway_close = 'https://api.mch.weixin.qq.com/sandboxnew/pay/closeorder';
             $this->gateway_refund = 'https://api.mch.weixin.qq.com/sandboxnew/secapi/pay/refund';
             $this->gateway_transfer = 'https://api.mch.weixin.qq.com/sandboxnew/mmpaymkttransfers/promotion/transfers';
             $this->gateway_micropay = 'https://api.mch.weixin.qq.com/sandboxnew/pay/micropay';
-            $this->gateway_bill = 'https://api.mch.weixin.qq.com/sandboxnew/pay/downloadbill';
             $this->gateway_paybank = 'https://api.mch.weixin.qq.com/sandboxnew/mmpaysptrans/pay_bank';
-            $this->gateway_ras_public = 'https://fraud.mch.weixin.qq.com/sandboxnew/risk/getpublickey';
+//            $this->gateway_ras_public = 'https://fraud.mch.weixin.qq.com/sandboxnew/risk/getpublickey';
             // 沙箱验证签名及沙箱密钥更新
             $sandbox_signkey = HttpService::getCache('sandbox_signkey');
             if (empty($sandbox_signkey)) {
@@ -227,7 +232,7 @@ abstract class Wechat extends GatewayInterface
             $data = $this->fromXml($this->post($url, $this->toXml($this->config)));
         }
         if (!isset($data['return_code']) || $data['return_code'] !== 'SUCCESS' || $data['result_code'] !== 'SUCCESS') {
-            $error = 'GetResultError:' . $data['return_msg'];
+            $error = 'ResultError:' . $data['return_msg'];
             $error .= isset($data['err_code_des']) ? ' - ' . $data['err_code_des'] : '';
         }
         if (!isset($error) && $this->getSign($data) !== $data['sign']) {

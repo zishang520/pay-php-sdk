@@ -69,7 +69,7 @@ class BankGateway extends Wechat
     {
         return '';
     }
-    
+
     /**
      * @param string $string
      * @param string $encrypted
@@ -91,7 +91,7 @@ class BankGateway extends Wechat
      */
     protected function getRsaContent()
     {
-        $cacheKey = "pub_ras_key_" . $this->userConfig->get('mch_id');
+        $cacheKey = "pub_ras_key_" . (empty($this->debug) ? '' : 'debug_') . $this->userConfig->get('mch_id');
         if (($pub_key = HttpService::getCache($cacheKey))) {
             return $pub_key;
         }
@@ -103,13 +103,10 @@ class BankGateway extends Wechat
         $options['sign'] = $this->getSign($options);
         $url = 'https://fraud.mch.weixin.qq.com/risk/getpublickey';
         $data = $this->fromXml($this->post($url, $this->toXml($options),
-            [
-                'ssl_cer' => $this->userConfig->get('ssl_cer', ''),
-                'ssl_key' => $this->userConfig->get('ssl_key', ''),
-            ]
+            ['ssl_cer' => $this->userConfig->get('ssl_cer', ''), 'ssl_key' => $this->userConfig->get('ssl_key', '')]
         ));
         if (!isset($data['return_code']) || $data['return_code'] !== 'SUCCESS' || $data['result_code'] !== 'SUCCESS') {
-            $error = 'GetResultError:' . $data['return_msg'];
+            $error = 'ResultError:' . $data['return_msg'];
             $error .= isset($data['err_code_des']) ? ' - ' . $data['err_code_des'] : '';
             throw new GatewayException($error, 20000, $data);
         }
