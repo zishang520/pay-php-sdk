@@ -75,6 +75,16 @@ abstract class Wechat extends GatewayInterface
     protected $gateway_bill = 'https://api.mch.weixin.qq.com/pay/downloadbill';
 
     /**
+     * @var string
+     */
+    protected $gateway_ras_public = 'https://fraud.mch.weixin.qq.com/risk/getpublickey';
+
+    /**
+     * @var string
+     */
+    protected $gateway_paybank = 'https://api.mch.weixin.qq.com/mmpaysptrans/pay_bank';
+
+    /**
      * Wechat constructor.
      * @param array $config
      * @throws Exception
@@ -96,6 +106,7 @@ abstract class Wechat extends GatewayInterface
         }
         // 沙箱模式
         if (!empty($config['debug'])) {
+
             $this->gateway = 'https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder';
             $this->gateway_query = 'https://api.mch.weixin.qq.com/sandboxnew/pay/orderquery';
             $this->gateway_close = 'https://api.mch.weixin.qq.com/sandboxnew/pay/closeorder';
@@ -103,6 +114,8 @@ abstract class Wechat extends GatewayInterface
             $this->gateway_transfer = 'https://api.mch.weixin.qq.com/sandboxnew/mmpaymkttransfers/promotion/transfers';
             $this->gateway_micropay = 'https://api.mch.weixin.qq.com/sandboxnew/pay/micropay';
             $this->gateway_bill = 'https://api.mch.weixin.qq.com/sandboxnew/pay/downloadbill';
+            $this->gateway_paybank = 'https://api.mch.weixin.qq.com/sandboxnew/mmpaysptrans/pay_bank';
+            $this->gateway_ras_public = 'https://fraud.mch.weixin.qq.com/sandboxnew/risk/getpublickey';
             // 沙箱验证签名及沙箱密钥更新
             $sandbox_signkey = HttpService::getCache('sandbox_signkey');
             if (empty($sandbox_signkey)) {
