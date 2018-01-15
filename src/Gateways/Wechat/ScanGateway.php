@@ -14,6 +14,8 @@
 
 namespace Pay\Gateways\Wechat;
 
+use Pay\Gateways\Wechat;
+
 /**
  * 微信扫码支付网关
  * Class ScanGateway

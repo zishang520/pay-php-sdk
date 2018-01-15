@@ -12,7 +12,7 @@
 // | 项目设计及部分源码参考于 yansongda/pay，在此特别感谢！
 // +----------------------------------------------------------------------
 
-namespace Pay\Gateways\Alipay;
+namespace Pay\Gateways;
 
 use InvalidArgumentException;
 use Pay\Contracts\Config;

@@ -14,6 +14,8 @@
 
 namespace Pay\Gateways\Wechat;
 
+use Pay\Gateways\Wechat;
+
 /**
  * 微信小程序支付网关
  * Class MiniappGateway

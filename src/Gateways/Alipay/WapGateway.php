@@ -14,6 +14,8 @@
 
 namespace Pay\Gateways\Alipay;
 
+use Pay\Gateways\Alipay;
+
 /**
  * 手机WAP支付网关
  * Class WapGateway

@@ -16,6 +16,8 @@ namespace Pay\Gateways\Wechat;
 
 use Pay\Exceptions\GatewayException;
 
+use Pay\Gateways\Wechat;
+
 /**
  * 微信企业打款网关
  * Class TransferGateway

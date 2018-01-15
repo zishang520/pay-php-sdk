@@ -14,6 +14,8 @@
 
 namespace Pay\Gateways\Wechat;
 
+use Pay\Gateways\Wechat;
+
 /**
  * 微信WAP网页支付网关
  * Class WapGateway
@@ -34,15 +36,13 @@ class WapGateway extends Wechat
     /**
      * 应用并生成参数
      * @param array $options
+     * @param string $return_url
      * @return string
      * @throws \Pay\Exceptions\GatewayException
      */
-    public function apply(array $options = [])
+    public function apply(array $options = [], $return_url = '')
     {
-        list($data, $return_url) = [
-            $this->preOrder($options),
-            $this->userConfig->get('return_url'),
-        ];
+        list($data, $return_url) = [$this->preOrder($options), $this->userConfig->get('return_url')];
         $data['mweb_url'] = isset($data['mweb_url']) ? $data['mweb_url'] : '';
         return is_null($return_url) ? $data['mweb_url'] : "{$data['mweb_url']}&redirect_url=" . urlencode($return_url);
     }

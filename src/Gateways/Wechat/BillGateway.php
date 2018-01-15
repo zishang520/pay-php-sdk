@@ -14,6 +14,8 @@
 
 namespace Pay\Gateways\Wechat;
 
+use Pay\Gateways\Wechat;
+
 /**
  * 下载微信电子面单
  * Class BillGateway

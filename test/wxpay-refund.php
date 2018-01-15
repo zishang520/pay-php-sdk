@@ -19,7 +19,7 @@ $config = require(__DIR__ . '/config.php');
 $pay = new \Pay\Pay($config);
 
 // 订单退款参数
-$payOrder = [
+$options = [
     'out_trade_no'  => '56737188841424', // 原商户订单号
     'out_refund_no' => '567371888414240', // 退款订单号
     'total_fee'     => '1',   // 原订单交易总金额
@@ -27,9 +27,9 @@ $payOrder = [
 ];
 
 try {
-    $options = $pay->driver('wechat')->gateway('transfer')->refund($payOrder);
+    $result = $pay->driver('wechat')->gateway('transfer')->refund($options);
     echo '<pre>';
-    var_export($options);
+    var_export($result);
 } catch (Exception $e) {
     echo $e->getMessage();
 }

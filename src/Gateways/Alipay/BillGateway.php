@@ -14,6 +14,8 @@
 
 namespace Pay\Gateways\Alipay;
 
+use Pay\Gateways\Alipay;
+
 /**
  * 支付宝电子面单下载
  * Class BillGateway

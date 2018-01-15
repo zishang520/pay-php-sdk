@@ -14,6 +14,8 @@
 
 namespace Pay\Gateways\Alipay;
 
+use Pay\Gateways\Alipay;
+
 /**
  * 支付宝刷卡支付
  * Class PosGateway

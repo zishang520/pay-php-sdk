@@ -15,22 +15,23 @@ include '../init.php';
 // 加载配置参数
 $config = require(__DIR__ . '/config.php');
 
+// 支付参数
+$options = [
+    'partner_trade_no' => time(),
+    'enc_bank_no'      => '6212263602037318102',
+    'enc_true_name'    => '邹景立',
+    'bank_code'        => '1002',
+    'amount'           => '100',
+    'desc'             => '打款测试',
+];
+
 // 实例支付对象
 $pay = new \Pay\Pay($config);
 
 try {
-    $options = [
-        'partner_trade_no' => time(),
-        'enc_bank_no'      => '6212263602037318102',
-        'enc_true_name'    => '邹景立',
-        'bank_code'        => '1002',
-        'amount'           => '100',
-        'desc'             => '打款测试',
-    ];
+    $result = $pay->driver('wechat')->gateway('bank')->apply($options);
     echo '<pre>';
-    $options = $pay->driver('wechat')->gateway('bank')->apply($options);
-    echo '<pre>';
-    var_export($options);
+    var_export($result);
 } catch (Exception $e) {
     echo $e->getMessage();
 }

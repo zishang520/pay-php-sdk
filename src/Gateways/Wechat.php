@@ -12,7 +12,7 @@
 // | 项目设计及部分源码参考于 yansongda/pay，在此特别感谢！
 // +----------------------------------------------------------------------
 
-namespace Pay\Gateways\Wechat;
+namespace Pay\Gateways;
 
 use Pay\Contracts\Config;
 use Pay\Contracts\GatewayInterface;
@@ -144,6 +144,13 @@ abstract class Wechat extends GatewayInterface
             'notify_url' => $this->userConfig->get('notify_url', ''),
             'trade_type' => $this->getTradeType(),
         ];
+        if ($this->userConfig->offsetExists('sub_appid')) {
+            $this->config['sub_appid'] = $this->userConfig->get('sub_appid', '');
+        }
+        if ($this->userConfig->offsetExists('sub_mch_id')) {
+            $this->config['sub_mch_id'] = $this->userConfig->get('sub_mch_id', '');
+        }
+
     }
 
     /**
@@ -297,11 +304,11 @@ abstract class Wechat extends GatewayInterface
     protected function toXml($data)
     {
         if (!is_array($data) || count($data) <= 0) {
-            throw new InvalidArgumentException('convert to xml error!invalid array!');
+            throw new InvalidArgumentException('convert to xml error !invalid array!');
         }
         $xml = '<xml>';
         foreach ($data as $key => $val) {
-            $xml .= is_numeric($val) ? '<' . $key . '>' . $val . '</' . $key . '>' : '<' . $key . '><![CDATA[' . $val . ']]></' . $key . '>';
+            $xml .= (is_numeric($val) ? "<{$key}>{$val}</{$key}>" : "<{$key}><![CDATA[{$val}]]></{$key}>");
         }
         return $xml . '</xml>';
     }

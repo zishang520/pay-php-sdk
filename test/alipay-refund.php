@@ -25,9 +25,9 @@ $out_trade_no = '56737188841424';
 $refund_fee = '1.00';
 
 try {
-    $options = $pay->driver('alipay')->gateway('transfer')->refund($out_trade_no, $refund_fee);
+    $result = $pay->driver('alipay')->gateway('transfer')->refund($out_trade_no, $refund_fee);
     echo '<pre>';
-    var_export($options);
+    var_export($result);
 } catch (Exception $e) {
     echo $e->getMessage();
 }

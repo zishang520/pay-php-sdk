@@ -18,6 +18,7 @@ use Pay\Contracts\HttpService;
 use Pay\Exceptions\Exception;
 use Pay\Exceptions\GatewayException;
 use Pay\Exceptions\InvalidArgumentException;
+use Pay\Gateways\Wechat;
 
 /**
  * 转账到银行卡

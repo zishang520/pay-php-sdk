@@ -19,7 +19,7 @@ $config = require(__DIR__ . '/config.php');
 $pay = new \Pay\Pay($config);
 
 // 支付宝转账参数
-$payOrder = [
+$options = [
     'out_biz_no'      => '', // 订单号
     'payee_type'      => 'ALIPAY_LOGONID', // 收款方账户类型(ALIPAY_LOGONID | ALIPAY_USERID)
     'payee_account'   => 'demo@sandbox.com', // 收款方账户
@@ -30,9 +30,9 @@ $payOrder = [
 ];
 
 try {
-    $options = $pay->driver('alipay')->gateway('transfer')->apply($payOrder);
+    $result = $pay->driver('alipay')->gateway('transfer')->apply($options);
     echo '<pre>';
-    var_export($options);
+    var_export($result);
 } catch (Exception $e) {
     echo $e->getMessage();
 }
