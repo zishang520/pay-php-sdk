@@ -42,11 +42,11 @@ class WapGateway extends Wechat
      */
     public function apply(array $options = [], $return_url = '')
     {
-        list($data, $return_url) = [$this->preOrder($options), $this->userConfig->get('return_url')];
+        $data = $this->preOrder($options);
         $data['mweb_url'] = isset($data['mweb_url']) ? $data['mweb_url'] : '';
         if (empty($return_url)) {
             $return_url = $this->userConfig->get('return_url');
         }
-        return is_null($return_url) ? $data['mweb_url'] : "{$data['mweb_url']}&redirect_url=" . urlencode($return_url);
+        return is_null($return_url) ? $data['mweb_url'] : ("{$data['mweb_url']}&redirect_url=" . urlencode($return_url));
     }
 }
