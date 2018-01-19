@@ -86,8 +86,8 @@ abstract class Alipay extends GatewayInterface
     public function apply(array $options)
     {
         $options['product_code'] = $this->getProductCode();
-        $this->config['method'] = $this->getMethod();
         $this->config['biz_content'] = json_encode($options);
+        $this->config['method'] = $this->getMethod();
         $this->config['sign'] = $this->getSign();
     }
 
@@ -149,16 +149,6 @@ abstract class Alipay extends GatewayInterface
         $toVerify = $sync ? json_encode($data) : $this->getSignContent($data, true);
         return openssl_verify($toVerify, base64_decode($sign), $res, OPENSSL_ALGO_SHA256) === 1 ? $data : false;
     }
-
-    /**
-     * @return string
-     */
-    abstract protected function getMethod();
-
-    /**
-     * @return string
-     */
-    abstract protected function getProductCode();
 
     /**
      * @return string
@@ -238,4 +228,14 @@ abstract class Alipay extends GatewayInterface
         unset($k, $v);
         return $stringToBeSigned;
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getMethod();
+
+    /**
+     * @return string
+     */
+    abstract protected function getProductCode();
 }
