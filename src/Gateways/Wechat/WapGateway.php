@@ -47,6 +47,6 @@ class WapGateway extends Wechat
         if (empty($return_url)) {
             $return_url = $this->userConfig->get('return_url');
         }
-        return is_null($return_url) ? $data['mweb_url'] : ("{$data['mweb_url']}&redirect_url=" . urlencode($return_url));
+        return $data['mweb_url'] . "&redirect_url=" . urlencode($return_url);
     }
 }
