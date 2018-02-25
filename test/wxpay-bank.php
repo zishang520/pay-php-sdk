@@ -33,7 +33,14 @@ try {
     echo '<pre>';
     var_export($result);
 } catch (Exception $e) {
-    echo $e->getMessage();
+    echo $e->getMessage() . PHP_EOL;
+}
+
+// 查询打款状态
+try {
+    $reuslt = $pay->driver('wechat')->gateway('bank')->find($options['partner_trade_no']);
+} catch (Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
 }
 
 

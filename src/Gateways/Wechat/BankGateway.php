@@ -28,6 +28,8 @@ use Pay\Gateways\Wechat;
 class BankGateway extends Wechat
 {
 
+    protected $gateway_query = 'https://api.mch.weixin.qq.com/mmpaysptrans/query_bank';
+
     /**
      * 发起支付
      * @param array $options
@@ -62,6 +64,20 @@ class BankGateway extends Wechat
         $this->config['enc_bank_no'] = $this->rsaEncode($options['enc_bank_no']);
         $this->config['enc_true_name'] = $this->rsaEncode($options['enc_true_name']);
         return $this->getResult($this->gateway_paybank, true);
+    }
+
+    /**
+     * 查询订单状态
+     * @param string $partner_trade_no 商户订单号
+     * @return array
+     * @throws GatewayException
+     */
+    public function find($partner_trade_no = '')
+    {
+        $this->unsetTradeTypeAndNotifyUrl();
+        $this->config['partner_trade_no'] = $partner_trade_no;
+        unset($this->config['appid'], $this->config['sign_type']);
+        return $this->getResult($this->gateway_query, true);
     }
 
     /**
