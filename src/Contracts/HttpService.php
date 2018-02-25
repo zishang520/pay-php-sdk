@@ -14,6 +14,7 @@
 
 namespace Pay\Contracts;
 
+use Pay\Exceptions\Exception;
 use Pay\Exceptions\InvalidArgumentException;
 
 /**
@@ -133,14 +134,14 @@ class HttpService
      * @param string $name 缓存名称
      * @param string $value 缓存内容
      * @param int $expired 缓存时间(0表示永久缓存)
-     * @throws \Exception
+     * @throws Exception
      */
     public static function setCache($name, $value = '', $expired = 3600)
     {
         $cache_file = self::getCacheName($name);
         $content = serialize(['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)]);
         if (!file_put_contents($cache_file, $content)) {
-            throw new \Exception('local cache error.', 500);
+            throw new Exception('local cache error.', 500);
         }
     }
 

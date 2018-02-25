@@ -34,7 +34,6 @@ class BankGateway extends Wechat
      * @return mixed
      * @throws Exception
      * @throws GatewayException
-     * @throws \Exception
      */
     public function apply(array $options)
     {
@@ -79,7 +78,6 @@ class BankGateway extends Wechat
      * @return string
      * @throws GatewayException
      * @throws Exception
-     * @throws \Exception
      */
     protected function rsaEncode($string, $encrypted = '')
     {
@@ -95,7 +93,7 @@ class BankGateway extends Wechat
     /**
      * @return string
      * @throws GatewayException
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getRsaContent()
     {
