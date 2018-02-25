@@ -34,6 +34,7 @@ class BankGateway extends Wechat
      * @return mixed
      * @throws Exception
      * @throws GatewayException
+     * @throws \Exception
      */
     public function apply(array $options)
     {
@@ -52,12 +53,13 @@ class BankGateway extends Wechat
         if (!isset($options['amount'])) {
             throw new InvalidArgumentException('Missing Options -- [amount]');
         }
+        unset($this->config['appid'], $this->config['notify_url'], $this->config['trade_type'], $this->config['sign_type']);
         if (isset($options['desc'])) {
             $this->config['desc'] = $options['desc'];
         }
         $this->config['amount'] = $options['amount'];
+        $this->config['bank_code'] = $options['bank_code'];
         $this->config['partner_trade_no'] = $options['partner_trade_no'];
-        $this->config['bank_code'] = $this->rsaEncode($options['bank_code']);
         $this->config['enc_bank_no'] = $this->rsaEncode($options['enc_bank_no']);
         $this->config['enc_true_name'] = $this->rsaEncode($options['enc_true_name']);
         return $this->getResult($this->gateway_paybank, true);
@@ -77,10 +79,14 @@ class BankGateway extends Wechat
      * @return string
      * @throws GatewayException
      * @throws Exception
+     * @throws \Exception
      */
     protected function rsaEncode($string, $encrypted = '')
     {
-        if (!openssl_public_encrypt("{$string}", $encrypted, $this->getRsaContent(), OPENSSL_PKCS1_OAEP_PADDING)) {
+        $search = ['-----BEGIN RSA PUBLIC KEY-----', '-----END RSA PUBLIC KEY-----', "\n", "\r"];
+        $pkc1 = str_replace($search, '', $this->getRsaContent());
+        $publicKey = '-----BEGIN PUBLIC KEY-----' . PHP_EOL . wordwrap('MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A' . $pkc1, 64, PHP_EOL, true) . PHP_EOL . '-----END PUBLIC KEY-----';
+        if (!openssl_public_encrypt("{$string}", $encrypted, $publicKey, OPENSSL_PKCS1_OAEP_PADDING)) {
             throw new Exception('Rsa Encrypt Error.');
         }
         return base64_encode($encrypted);
@@ -89,6 +95,7 @@ class BankGateway extends Wechat
     /**
      * @return string
      * @throws GatewayException
+     * @throws \Exception
      */
     protected function getRsaContent()
     {
