@@ -242,11 +242,13 @@ abstract class Wechat extends GatewayInterface
             $error = 'ResultError:' . $data['return_msg'];
             $error .= isset($data['err_code_des']) ? ' - ' . $data['err_code_des'] : '';
         }
-        if (!isset($error) && $this->getSign($data) !== $data['sign']) {
-            $error = 'GetResultError: return data sign error';
-        }
-        if (isset($error)) {
-            throw new GatewayException($error, 20000, $data);
+        if (isset($data['sign'])) {
+            if (!isset($error) && $this->getSign($data) !== $data['sign']) {
+                $error = 'GetResultError: return data sign error';
+            }
+            if (isset($error)) {
+                throw new GatewayException($error, 20000, $data);
+            }
         }
         return $data;
     }
