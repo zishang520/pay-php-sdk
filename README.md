@@ -104,7 +104,7 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 - apply(array $options)  
 说明：支付发起接口  
 参数：数组类型，订单业务配置项，包含 订单号，订单金额等  
-返回：mixed 详情请看「支付网关配置说明与返回值」一节。 
+返回：mixed
 
 - refund(array|string $options, $refund_amount = null)  
 说明：发起退款接口  
