@@ -90,7 +90,7 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 | :----: | :-----: | :-------: |
 | wechat | mp      | 公众号支付  |
 | wechat | miniapp | 小程序支付  |
-| wechat | wap     | H5 支付     |
+| wechat | wap     | H5 支付（不支持沙箱模式） |
 | wechat | scan    | 扫码支付    |
 | wechat | pos     | 刷卡支付    |
 | wechat | app     | APP 支付   |
