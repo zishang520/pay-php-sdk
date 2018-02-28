@@ -95,7 +95,8 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 | wechat | pos     | 刷卡支付    |
 | wechat | app     | APP 支付   |
 | wechat | bill    | 电子账单   |
-| wechat | transfer  | 企业付款（可用于平台用户提现）  |
+| wechat | transfer  | 企业付款到零钱（可用于平台用户提现）  |
+| wechat | bank  | 企业付款到银行卡（可用于平台用户提现）  |
 
 ## 操作
 
