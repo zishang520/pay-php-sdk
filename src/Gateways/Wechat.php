@@ -246,9 +246,9 @@ abstract class Wechat extends GatewayInterface
             if (!isset($error) && $this->getSign($data) !== $data['sign']) {
                 $error = 'GetResultError: return data sign error';
             }
-            if (isset($error)) {
-                throw new GatewayException($error, 20000, $data);
-            }
+        }
+        if (isset($error)) {
+            throw new GatewayException($error, 20000, $data);
         }
         return $data;
     }
