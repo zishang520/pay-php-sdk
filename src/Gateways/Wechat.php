@@ -131,7 +131,7 @@ abstract class Wechat extends GatewayInterface
                     $sandbox_signkey = $result['sandbox_signkey'];
                     HttpService::setCache('sandbox_signkey', $sandbox_signkey);
                 } else {
-                    throw new Exception('沙箱验证签名及获取沙箱密钥失败！');
+                    throw new Exception(isset($result['return_msg']) ? $result['return_msg'] : '沙箱验证签名及获取沙箱密钥失败！');
                 }
             }
             $this->userConfig->set('mch_key', $sandbox_signkey);
