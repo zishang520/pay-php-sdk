@@ -139,7 +139,7 @@ abstract class Kjalipay extends GatewayInterface
             throw new InvalidArgumentException('Missing Config -- [merchantkey]');
         }
         $sign = is_null($sign) ? $data['sign'] : $sign;
-        return md5(sprintf('%s&key=%s', $this->getSignContent($data)), $this->userConfig->get('merchantkey')) === $sign ? $data : false;
+        return md5(sprintf('%s&key=%s', $this->getSignContent($data), $this->userConfig->get('merchantkey'))) === $sign ? $data : false;
     }
 
     /**
