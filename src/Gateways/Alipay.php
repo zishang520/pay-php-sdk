@@ -14,11 +14,11 @@
 
 namespace Pay\Gateways;
 
-use InvalidArgumentException;
 use Pay\Contracts\Config;
 use Pay\Contracts\GatewayInterface;
 use Pay\Contracts\HttpService;
 use Pay\Exceptions\GatewayException;
+use Pay\Exceptions\InvalidArgumentException;
 
 /**
  * 支付宝抽象类
@@ -64,16 +64,16 @@ abstract class Alipay extends GatewayInterface
             $this->gateway = 'https://openapi.alipaydev.com/gateway.do?charset=utf-8';
         }
         $this->config = [
-            'app_id'      => $this->userConfig->get('app_id'),
-            'method'      => '',
-            'format'      => 'JSON',
-            'charset'     => 'utf-8',
-            'sign_type'   => 'RSA2',
-            'version'     => '1.0',
-            'return_url'  => $this->userConfig->get('return_url', ''),
-            'notify_url'  => $this->userConfig->get('notify_url', ''),
-            'timestamp'   => date('Y-m-d H:i:s'),
-            'sign'        => '',
+            'app_id' => $this->userConfig->get('app_id'),
+            'method' => '',
+            'format' => 'JSON',
+            'charset' => 'utf-8',
+            'sign_type' => 'RSA2',
+            'version' => '1.0',
+            'return_url' => $this->userConfig->get('return_url', ''),
+            'notify_url' => $this->userConfig->get('notify_url', ''),
+            'timestamp' => date('Y-m-d H:i:s'),
+            'sign' => '',
             'biz_content' => '',
         ];
     }
@@ -200,7 +200,7 @@ abstract class Alipay extends GatewayInterface
             throw new InvalidArgumentException('Missing Config -- [private_key]');
         }
         $res = "-----BEGIN RSA PRIVATE KEY-----\n" .
-            wordwrap($this->userConfig->get('private_key'), 64, "\n", true) .
+        wordwrap($this->userConfig->get('private_key'), 64, "\n", true) .
             "\n-----END RSA PRIVATE KEY-----";
         openssl_sign($this->getSignContent($this->config), $sign, $res, OPENSSL_ALGO_SHA256);
         return base64_encode($sign);

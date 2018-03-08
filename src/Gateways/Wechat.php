@@ -137,10 +137,10 @@ abstract class Wechat extends GatewayInterface
             $this->userConfig->set('mch_key', $sandbox_signkey);
         }
         $this->config = [
-            'appid'      => $this->userConfig->get('app_id', ''),
-            'mch_id'     => $this->userConfig->get('mch_id', ''),
-            'nonce_str'  => $this->createNonceStr(),
-            'sign_type'  => 'MD5',
+            'appid' => $this->userConfig->get('app_id', ''),
+            'mch_id' => $this->userConfig->get('mch_id', ''),
+            'nonce_str' => $this->createNonceStr(),
+            'sign_type' => 'MD5',
             'notify_url' => $this->userConfig->get('notify_url', ''),
             'trade_type' => $this->getTradeType(),
         ];
@@ -252,7 +252,6 @@ abstract class Wechat extends GatewayInterface
         }
         return $data;
     }
-
 
     /**
      * 生成内容签名
