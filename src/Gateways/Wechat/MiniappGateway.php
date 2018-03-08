@@ -9,10 +9,12 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/pay-php-sdk
 // +----------------------------------------------------------------------
+// | 项目设计及部分源码参考于 yansongda/pay，在此特别感谢！
+// +----------------------------------------------------------------------
 
 namespace Pay\Gateways\Wechat;
 
-use Pay\Exceptions\InvalidArgumentException;
+use Pay\Gateways\Wechat;
 
 /**
  * 微信小程序支付网关
@@ -35,6 +37,7 @@ class MiniappGateway extends Wechat
      * 应用并返回参数
      * @param array $options
      * @return array
+     * @throws \Pay\Exceptions\GatewayException
      */
     public function apply(array $options = [])
     {

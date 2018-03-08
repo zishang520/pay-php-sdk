@@ -16,7 +16,7 @@ include '../init.php';
 $config = require(__DIR__ . '/config.php');
 
 // 支付参数
-$payOrder = [
+$options = [
     'partner_trade_no' => '42134122', //商户订单号
     'openid'           => 'ol0Q_uJUcrb1DOjmQRycmSpLjRmo', //收款人的openid
     'check_name'       => 'NO_CHECK', //NO_CHECK：不校验真实姓名\FORCE_CHECK：强校验真实姓名
@@ -30,8 +30,9 @@ $payOrder = [
 $pay = new \Pay\Pay($config);
 
 try {
-    $options = $pay->driver('wechat')->gateway('transfer')->apply($payOrder);
-    var_export($options);
+    $result = $pay->driver('wechat')->gateway('transfer')->apply($options);
+    echo '<pre>';
+    var_export($result);
 } catch (Exception $e) {
     echo $e->getMessage();
 }

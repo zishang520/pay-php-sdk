@@ -8,6 +8,8 @@ PHP支付SDK（微信支付 + 支付宝支付）
 
 欢迎`Star`，欢迎`Fork`！
 
+项目设计及部分源码参考于 [yansongda/pay](https://github.com/yansongda/pay)，在此特别感谢！
+
 ## 特点
 - 代码简洁，无需加载多余组件，可应用于任何平台或框架
 - 隐藏开发者不需要关注的细节，完全内部实现
@@ -20,7 +22,7 @@ PHP支付SDK（微信支付 + 支付宝支付）
 ## 声明
 - 代码与框架部分参考于互联网开源项目
 - `SDK`全部源码基于`MIT`协议开源，完全免费
-- **开发交流`QQ`群：513350915（新）**
+- **开发交流`QQ`群：513350915**
 
 若对您有帮助，可以**赞助**支持下作者哦！
 ----
@@ -42,6 +44,7 @@ $config = [
         'ssl_cer'    => '', // 微信证书 cert 文件
         'ssl_key'    => '', // 微信证书 key 文件
         'notify_url' => '', // 支付通知URL
+        'cache_path' => '',// 缓存目录配置（沙箱模式需要用到）
     ],
     // 支付宝支付参数
     'alipay' => [
@@ -87,12 +90,13 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 | :----: | :-----: | :-------: |
 | wechat | mp      | 公众号支付  |
 | wechat | miniapp | 小程序支付  |
-| wechat | wap     | H5 支付     |
+| wechat | wap     | H5 支付（不支持沙箱模式） |
 | wechat | scan    | 扫码支付    |
 | wechat | pos     | 刷卡支付    |
 | wechat | app     | APP 支付   |
 | wechat | bill    | 电子账单   |
-| wechat | transfer  | 企业付款  |
+| wechat | transfer  | 企业付款到零钱（可用于平台用户提现）  |
+| wechat | bank  | 企业付款到银行卡（可用于平台用户提现）  |
 
 ## 操作
 
@@ -101,7 +105,7 @@ SDK 中对应的 driver 和 gateway 如下表所示：
 - apply(array $options)  
 说明：支付发起接口  
 参数：数组类型，订单业务配置项，包含 订单号，订单金额等  
-返回：mixed 详情请看「支付网关配置说明与返回值」一节。 
+返回：mixed
 
 - refund(array|string $options, $refund_amount = null)  
 说明：发起退款接口  

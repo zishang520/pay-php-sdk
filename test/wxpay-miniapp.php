@@ -16,22 +16,24 @@ include '../init.php';
 $config = require(__DIR__ . '/config.php');
 
 // 支付参数
-$payOrder = [
+$options = [
     'out_trade_no'     => '41234123', // 订单号
     'total_fee'        => '101', // 订单金额，**单位：分**
     'body'             => '订单描述', // 订单描述
     'spbill_create_ip' => '127.0.0.1', // 支付人的 IP
     'openid'           => 'ol0Q_uJUcrb1DOjmQRycmSpLjRmo', // 支付人的 openID
+    'notify_url'       => 'http://localhost/notify.php', // 定义通知URL
 ];
 
 // 实例支付对象
 $pay = new \Pay\Pay($config);
 
 try {
-    $options = $pay->driver('wechat')->gateway('miniapp')->apply($payOrder);
-    var_export($options);
+    $result = $pay->driver('wechat')->gateway('miniapp')->apply($options);
+    echo '<pre>';
+    var_export($result);
 } catch (Exception $e) {
-    echo "创建订单失败，" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 

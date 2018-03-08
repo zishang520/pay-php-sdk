@@ -9,12 +9,15 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/pay-php-sdk
 // +----------------------------------------------------------------------
+// | 项目设计及部分源码参考于 yansongda/pay，在此特别感谢！
+// +----------------------------------------------------------------------
 
-namespace Pay\Gateways\Alipay;
+namespace Pay\Gateways;
 
 use InvalidArgumentException;
 use Pay\Contracts\Config;
 use Pay\Contracts\GatewayInterface;
+use Pay\Contracts\HttpService;
 use Pay\Exceptions\GatewayException;
 
 /**
@@ -53,9 +56,12 @@ abstract class Alipay extends GatewayInterface
         if (is_null($this->userConfig->get('app_id'))) {
             throw new InvalidArgumentException('Missing Config -- [app_id]');
         }
+        if (!empty($config['cache_path'])) {
+            HttpService::$cachePath = $config['cache_path'];
+        }
         // 沙箱模式
         if (!empty($config['debug'])) {
-            $this->gateway = 'https://openapi.alipaydev.com/gateway.do';
+            $this->gateway = 'https://openapi.alipaydev.com/gateway.do?charset=utf-8';
         }
         $this->config = [
             'app_id'      => $this->userConfig->get('app_id'),
@@ -80,8 +86,8 @@ abstract class Alipay extends GatewayInterface
     public function apply(array $options)
     {
         $options['product_code'] = $this->getProductCode();
-        $this->config['method'] = $this->getMethod();
         $this->config['biz_content'] = json_encode($options);
+        $this->config['method'] = $this->getMethod();
         $this->config['sign'] = $this->getSign();
     }
 
@@ -90,6 +96,7 @@ abstract class Alipay extends GatewayInterface
      * @param array|string $options 退款参数或退款商户订单号
      * @param null $refund_amount 退款金额
      * @return array|bool
+     * @throws GatewayException
      */
     public function refund($options, $refund_amount = null)
     {
@@ -101,8 +108,9 @@ abstract class Alipay extends GatewayInterface
 
     /**
      * 关闭支付宝进行中的订单
-     * @param $options
+     * @param array|string $options
      * @return array|bool
+     * @throws GatewayException
      */
     public function close($options)
     {
@@ -116,6 +124,7 @@ abstract class Alipay extends GatewayInterface
      * 查询支付宝订单状态
      * @param string $out_trade_no
      * @return array|bool
+     * @throws GatewayException
      */
     public function find($out_trade_no = '')
     {
@@ -144,26 +153,15 @@ abstract class Alipay extends GatewayInterface
     /**
      * @return string
      */
-    abstract protected function getMethod();
-
-    /**
-     * @return string
-     */
-    abstract protected function getProductCode();
-
-    /**
-     * @return string
-     */
     protected function buildPayHtml()
     {
-        $sHtml = "<form id='alipaysubmit' name='alipaysubmit' action='{$this->gateway}' method='POST'>";
-        while (list($key, $val) = each($this->config)) {
-            $val = str_replace("'", '&apos;', $val);
-            $sHtml .= "<input type='hidden' name='" . $key . "' value='" . $val . "'/>";
+        $html = "<form id='alipaysubmit' name='alipaysubmit' action='{$this->gateway}' method='post'>";
+        foreach ($this->config as $key => $value) {
+            $value = str_replace("'", '&apos;', $value);
+            $html .= "<input type='hidden' name='{$key}' value='{$value}'/>";
         }
-        $sHtml .= "<input type='submit' value='ok' style='display:none;''></form>";
-        $sHtml .= "<script>document.forms['alipaysubmit'].submit();</script>";
-        return $sHtml;
+        $html .= "<input type='submit' value='ok' style='display:none;'></form>";
+        return $html . "<script>document.forms['alipaysubmit'].submit();</script>";
     }
 
     /**
@@ -175,13 +173,19 @@ abstract class Alipay extends GatewayInterface
      */
     protected function getResult($options, $method)
     {
-        $this->config['biz_content'] = json_encode($options);
         $this->config['method'] = $method;
+        $this->config['biz_content'] = json_encode($options);
         $this->config['sign'] = $this->getSign();
         $method = str_replace('.', '_', $method) . '_response';
         $data = json_decode($this->post($this->gateway, $this->config), true);
         if (!isset($data[$method]['code']) || $data[$method]['code'] !== '10000') {
-            throw new GatewayException("GetResultError:{$data[$method]['msg']} - {$data[$method]['sub_code']}[{$data[$method]['sub_msg']}]", $data[$method]['code'], $data);
+            throw new GatewayException(
+                "\nResultError" .
+                (empty($data[$method]['code']) ? '' : "\n{$data[$method]['msg']}[{$data[$method]['code']}]") .
+                (empty($data[$method]['sub_code']) ? '' : "\n{$data[$method]['sub_msg']}[{$data[$method]['sub_code']}]\n"),
+                $data[$method]['code'],
+                $data
+            );
         }
         return $this->verify($data[$method], $data['sign'], true);
     }
@@ -224,4 +228,14 @@ abstract class Alipay extends GatewayInterface
         unset($k, $v);
         return $stringToBeSigned;
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getMethod();
+
+    /**
+     * @return string
+     */
+    abstract protected function getProductCode();
 }

@@ -9,8 +9,12 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/pay-php-sdk
 // +----------------------------------------------------------------------
+// | 项目设计及部分源码参考于 yansongda/pay，在此特别感谢！
+// +----------------------------------------------------------------------
 
 namespace Pay\Gateways\Alipay;
+
+use Pay\Gateways\Alipay;
 
 /**
  * 支付宝电子面单下载
@@ -43,6 +47,7 @@ class BillGateway extends Alipay
      * 应用并返回参数
      * @param array $options
      * @return array|bool
+     * @throws \Pay\Exceptions\GatewayException
      */
     public function apply(array $options = [])
     {

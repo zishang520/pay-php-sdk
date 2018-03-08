@@ -9,16 +9,27 @@
 // +----------------------------------------------------------------------
 // | github开源项目：https://github.com/zoujingli/pay-php-sdk
 // +----------------------------------------------------------------------
+// | 项目设计及部分源码参考于 yansongda/pay，在此特别感谢！
+// +----------------------------------------------------------------------
 
 namespace Pay\Contracts;
 
+use Pay\Exceptions\Exception;
+use Pay\Exceptions\InvalidArgumentException;
+
 /**
  * 网络访问工具
- * Class Http
+ * Class HttpService
  * @package Pay\Contracts
  */
 class HttpService
 {
+
+    /**
+     * 缓存路径
+     * @var null
+     */
+    public static $cachePath = null;
 
     /**
      * 以get访问模拟访问
@@ -71,13 +82,21 @@ class HttpService
             curl_setopt($curl, CURLOPT_HTTPHEADER, $options['headers']);
         }
         // 证书文件设置
-        if (!empty($options['ssl_cer']) && file_exists($options['ssl_cer'])) {
-            curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
+        if (!empty($options['ssl_cer'])) {
+            if (file_exists($options['ssl_cer'])) {
+                curl_setopt($curl, CURLOPT_SSLCERTTYPE, 'PEM');
+                curl_setopt($curl, CURLOPT_SSLCERT, $options['ssl_cer']);
+            } else {
+                throw new InvalidArgumentException("Certificate files that do not exist. --- [{$options['ssl_cer']}]");
+            }
         }
-        if (!empty($options['ssl_key']) && file_exists($options['ssl_key'])) {
-            curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
-            curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
+        if (!empty($options['ssl_key'])) {
+            if (file_exists($options['ssl_key'])) {
+                curl_setopt($curl, CURLOPT_SSLKEYTYPE, 'PEM');
+                curl_setopt($curl, CURLOPT_SSLKEY, $options['ssl_key']);
+            } else {
+                throw new InvalidArgumentException("Certificate files that do not exist. --- [{$options['ssl_key']}]");
+            }
         }
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
@@ -108,5 +127,65 @@ class HttpService
             }
         }
         return $data;
+    }
+
+    /**
+     * 缓存配置与存储
+     * @param string $name 缓存名称
+     * @param string $value 缓存内容
+     * @param int $expired 缓存时间(0表示永久缓存)
+     * @throws Exception
+     */
+    public static function setCache($name, $value = '', $expired = 3600)
+    {
+        $cache_file = self::getCacheName($name);
+        $content = serialize(['name' => $name, 'value' => $value, 'expired' => time() + intval($expired)]);
+        if (!file_put_contents($cache_file, $content)) {
+            throw new Exception('local cache error.', 500);
+        }
+    }
+
+    /**
+     * 获取缓存内容
+     * @param string $name 缓存名称
+     * @return null|mixed
+     */
+    public static function getCache($name)
+    {
+        $cache_file = self::getCacheName($name);
+        if (file_exists($cache_file) && ($content = file_get_contents($cache_file))) {
+            $data = unserialize($content);
+            if (isset($data['expired']) && (intval($data['expired']) === 0 || intval($data['expired']) >= time())) {
+                return $data['value'];
+            }
+            self::delCache($name);
+        }
+        return null;
+    }
+
+    /**
+     * 移除缓存文件
+     * @param string $name 缓存名称
+     * @return bool
+     */
+    public static function delCache($name)
+    {
+        $cache_file = self::getCacheName($name);
+        return file_exists($cache_file) ? unlink($cache_file) : true;
+    }
+
+    /**
+     * 应用缓存目录
+     * @param string $name
+     * @return string
+     */
+    private static function getCacheName($name)
+    {
+        if (empty(self::$cachePath)) {
+            self::$cachePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Cache' . DIRECTORY_SEPARATOR;
+        }
+        self::$cachePath = rtrim(self::$cachePath, '/\\') . DIRECTORY_SEPARATOR;
+        file_exists(self::$cachePath) || mkdir(self::$cachePath, 0755, true);
+        return self::$cachePath . $name;
     }
 }

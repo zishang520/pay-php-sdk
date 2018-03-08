@@ -17,22 +17,30 @@ $config = require(__DIR__ . '/config.php');
 
 // 支付参数
 $options = [
-    'out_trade_no'     => '3412', // 订单号
-    'total_fee'        => '1', // 订单金额，**单位：分**
-    'body'             => '', // 订单描述
-    'spbill_create_ip' => '', // 支付人的 IP
-    'auth_code'        => '', // 授权码
+    'partner_trade_no' => time(),
+    'enc_bank_no'      => '6212263602037318102',
+    'enc_true_name'    => '邹景立',
+    'bank_code'        => '1002',
+    'amount'           => '100',
+    'desc'             => '打款测试',
 ];
 
 // 实例支付对象
 $pay = new \Pay\Pay($config);
 
 try {
-    $result = $pay->driver('wechat')->gateway('pos')->apply($options);
+    $result = $pay->driver('wechat')->gateway('bank')->apply($options);
     echo '<pre>';
     var_export($result);
 } catch (Exception $e) {
-    echo $e->getMessage();
+    echo $e->getMessage() . PHP_EOL;
+}
+
+// 查询打款状态
+try {
+    $reuslt = $pay->driver('wechat')->gateway('bank')->find($options['partner_trade_no']);
+} catch (Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
 }
 
 

@@ -16,20 +16,22 @@ include '../init.php';
 $config = require(__DIR__ . '/config.php');
 
 // 支付参数
-$payOrder = [
+$options = [
     'out_trade_no' => '41234123', // 商户订单号
     'total_amount' => '1', // 支付金额
     'subject'      => 'test subject', // 支付订单描述
+    'notify_url'   => 'http://localhost/notify.php', // 定义通知URL
 ];
 
 // 实例支付对象
 $pay = new \Pay\Pay($config);
 
 try {
-    $options = $pay->driver('alipay')->gateway('app')->apply($payOrder);
-    var_dump($options);
+    $result = $pay->driver('alipay')->gateway('app')->apply($options);
+    echo '<pre>';
+    var_export($result);
 } catch (Exception $e) {
-    echo "创建订单失败，" . $e->getMessage();
+    echo $e->getMessage();
 }
 
 
