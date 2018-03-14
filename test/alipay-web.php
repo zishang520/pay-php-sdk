@@ -15,13 +15,16 @@ include '../init.php';
 // 加载配置参数
 $config = require(__DIR__ . '/config.php');
 
-// 支付参数
+// 参考请求参数  https://docs.open.alipay.com/203/107090/
 $options = [
-    'out_trade_no' => '42314123412', // 商户订单号
+    'out_trade_no' => '3252345', // 商户订单号
     'total_amount' => '1', // 支付金额
     'subject'      => '支付订单描述', // 支付订单描述
-    'notify_url'   => 'http://localhost/notify.php', // 定义通知URL
 ];
+
+// 参考公共参数  https://docs.open.alipay.com/203/107090/
+$config['notify_url'] = 'http://localhost/notify.php';
+$config['return_url'] = 'http://localhost/return.php';
 
 // 实例支付对象
 $pay = new \Pay\Pay($config);
