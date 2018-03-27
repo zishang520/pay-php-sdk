@@ -17,7 +17,7 @@ $config = require(__DIR__ . '/config.php');
 
 // 参考请求参数  https://docs.open.alipay.com/270/alipay.trade.page.pay
 $options = [
-    'out_trade_no' => '3252345', // 商户订单号
+    'out_trade_no' => time(), // 商户订单号
     'total_amount' => '1', // 支付金额
     'subject'      => '支付订单描述', // 支付订单描述
 ];
@@ -30,9 +30,7 @@ $config['return_url'] = 'http://localhost/return.php';
 $pay = new \Pay\Pay($config);
 
 try {
-    $result = $pay->driver('alipay')->gateway('wap')->apply($options);
-    echo '<pre>';
-    var_export($result);
+    echo $pay->driver('alipay')->gateway('wap')->apply($options);
 } catch (Exception $e) {
     echo $e->getMessage();
 }
