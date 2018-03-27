@@ -30,9 +30,7 @@ $config['return_url'] = 'http://pay.thinkadmin.top/test/alipay-success.php';
 $pay = new \Pay\Pay($config);
 
 try {
-    $result = $pay->driver('alipay')->gateway('web')->apply($options);
-    echo '<pre>';
-    var_export($result);
+    echo $pay->driver('alipay')->gateway('web')->apply($options);
 } catch (Exception $e) {
     echo $e->getMessage();
 }
