@@ -23,8 +23,8 @@ $options = [
 ];
 
 // 参考公共参数  https://docs.open.alipay.com/270/alipay.trade.page.pay
-$config['notify_url'] = 'http://localhost/notify.php';
-$config['return_url'] = 'http://localhost/return.php';
+$config['notify_url'] = 'http://pay.thinkadmin.top/test/alipay-notify.php';
+$config['return_url'] = 'http://pay.thinkadmin.top/test/alipay-success.php';
 
 // 实例支付对象
 $pay = new \Pay\Pay($config);
