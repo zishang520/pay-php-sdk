@@ -138,10 +138,15 @@ abstract class Shoppay extends GatewayInterface
         $this->config = $option + $this->config;
         $this->config['sign'] = $this->getSign($type);
         $response = $this->post($url, $this->config);
+        if ($msg = json_decode($response, true)) {
+            return $msg;
+        }
+        if (stripos($response, 'http') === 0) {
+            return ['status' => 200, 'msg' => 'ok', 'url' => $response];
+        }
         try {
-            list($code, $message) = explode(',', $response);
-            var_dump($response);
-            return ['code' => $code, 'msg' => $message];
+            list($status, $message) = explode(',', $response);
+            return ['status' => $status, 'msg' => $message];
         } catch (Exception $e) {
             var_dump($response);
             throw new UnexpectedValueException('Response Error.');

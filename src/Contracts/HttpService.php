@@ -57,7 +57,6 @@ class HttpService
         return self::request('post', $url, $options);
     }
 
-
     /**
      * CURL模拟网络请求
      * @param string $method 请求方法
@@ -105,7 +104,18 @@ class HttpService
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         list($content, $status) = [curl_exec($curl), curl_getinfo($curl), curl_close($curl)];
-        return (intval($status["http_code"]) === 200) ? $content : false;
+        switch (intval($status["http_code"])) {
+            case 200:
+                return $content;
+                break;
+            case 301:
+            case 302:
+                return $status['redirect_url'];
+                break;
+            default:
+                return false;
+                break;
+        }
     }
 
     /**
