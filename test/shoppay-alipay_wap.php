@@ -17,20 +17,16 @@ $config = require __DIR__ . '/config.php';
 
 // 支付参数
 $options = [
-    'pay_orderid' => time(), // 订单号
-    'pay_amount' => '0.01', // 订单金额，**单位：分**
-    'gate' => 'BOC',
-    'pay_productname' => '测试商品', //商品名称
-    'pay_productdesc' => '订单描述', // 订单描述
-    'pay_productnum' => 1, //商品数量， 选填
-    'pay_producturl' => 'http://localhost/notify.php', // 商品地址
+    'sdorderno' => time(), // 订单号
+    'total_fee' => '0.01', // 订单金额，**单位：分**
+    'remark' => '测试商品', //商品名称
 ];
 
 // 实例支付对象
 $pay = new \Pay\Pay($config);
 
 try {
-    $result = $pay->driver('ruilian')->gateway('Unionpay')->apply($options);
+    $result = $pay->driver('shoppay')->gateway('AlipayWap')->apply($options);
     var_dump($result);
 } catch (Exception $e) {
     echo $e->getMessage();

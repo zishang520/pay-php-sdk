@@ -18,6 +18,7 @@ $config = require __DIR__ . '/config.php';
 // 支付参数
 $options = [
     'pay_orderid' => time(), // 订单号
+    'gate' => 'BOC',
     'pay_amount' => '0.01', // 订单金额，**单位：分**
     'pay_productname' => '测试商品', //商品名称
     'pay_productdesc' => '订单描述', // 订单描述
