@@ -71,4 +71,16 @@ return [
         // 缓存目录配置
         'cache_path' => '',
     ],
+    'ruilian' => [
+        // 商户号
+        'pay_memberid' => '',
+        // 商户密钥
+        'merchantkey' => '',
+        // 支付成功通知地址
+        'notify_url' => '',
+        // 网页支付回跳地址
+        'return_url' => '',
+        // 缓存目录配置
+        'cache_path' => '',
+    ],
 ];
