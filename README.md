@@ -54,7 +54,47 @@ $config = [
         'public_key'  => '', // 支付宝公钥(1行填写)
         'private_key' => '', // 支付宝私钥(1行填写)
         'notify_url'  => '', // 支付通知URL
-    ]
+    ],
+    'kjalipay' => [
+        // APi地址
+        'api_url' => '',
+        // 应用编号
+        'app_no' => '',
+        // 商户号
+        'merchantid' => '',
+        // 商户密钥
+        'merchantkey' => '',
+        // 支付成功通知地址
+        'notify_url' => '',
+        // 网页支付回跳地址
+        'return_url' => '',
+        // 缓存目录配置
+        'cache_path' => '',
+    ],
+    'ruilian' => [
+        // 商户号
+        'pay_memberid' => '',
+        // 商户密钥
+        'merchantkey' => '',
+        // 支付成功通知地址
+        'notify_url' => '',
+        // 网页支付回跳地址
+        'return_url' => '',
+        // 缓存目录配置
+        'cache_path' => '',
+    ],
+    'shoppay' => [
+        // 商户号
+        'customerid' => '',
+        // 商户密钥
+        'merchantkey' => '',
+        // 支付成功通知地址
+        'notify_url' => '',
+        // 网页支付回跳地址
+        'return_url' => '',
+        // 缓存目录配置
+        'cache_path' => '',
+    ],
 ];
 ```
 
