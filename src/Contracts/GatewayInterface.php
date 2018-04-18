@@ -69,4 +69,15 @@ abstract class GatewayInterface
     {
         return HttpService::post($url, $data, $options);
     }
+    /**
+     * 网络模拟请求
+     * @param string $url 网络请求URL
+     * @param array|string $data 请求数据
+     * @param array $options
+     * @return bool|string
+     */
+    public function get($url, $data, $options = [])
+    {
+        return HttpService::get($url, $data, $options);
+    }
 }

@@ -95,4 +95,16 @@ return [
         // 缓存目录配置
         'cache_path' => '',
     ],
+    'iexpay' => [
+        // 商户密钥
+        'payKey' => '',
+        // 商户通讯密钥
+        'paySecret' => '',
+        // 支付成功通知地址
+        'notify_url' => '',
+        // 网页支付回跳地址
+        'return_url' => '',
+        // 缓存目录配置
+        'cache_path' => '',
+    ],
 ];
