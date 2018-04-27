@@ -124,7 +124,7 @@ abstract class Iexpay extends GatewayInterface
     public function verify($data, $sign = null, $sync = false)
     {
         $sign = is_null($sign) ? $data['sign'] : $sign;
-        return strtoupper(md5(sprintf('%s&paySecret=%s', $this->getSignContent($data), $this->userConfig->get('paySecret')))) === $sign ? $data : false;
+        return strtoupper(md5(sprintf('%s&paySecret=%s', $this->getSignContent($data), $this->userConfig->get('paySecret')))) === strtoupper($sign) ? $data : false;
     }
 
     protected function buildUrl($option, $method)
