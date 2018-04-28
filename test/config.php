@@ -107,4 +107,16 @@ return [
         // 缓存目录配置
         'cache_path' => '',
     ],
+    'cxfpay' => [
+        // 商户号
+        'merchantid' => '105471000031',
+        // 商户密钥
+        'merchantkey' => 'e88f9384-a6d6-4c63-97b8-8212149f994d',
+        // 支付成功通知地址
+        'notify_url' => '',
+        // 网页支付回跳地址
+        'return_url' => '',
+        // 缓存目录配置
+        'cache_path' => '',
+    ],
 ];
