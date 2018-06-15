@@ -217,11 +217,13 @@ abstract class Alipay extends GatewayInterface
         ksort($toBeSigned);
         $stringToBeSigned = '';
         foreach ($toBeSigned as $k => $v) {
-            if ($verify && $k != 'sign' && $k != 'sign_type') {
-                $stringToBeSigned .= $k . '=' . $v . '&';
-            }
-            if (!$verify && $v !== '' && !is_null($v) && $k != 'sign' && '@' != substr($v, 0, 1)) {
-                $stringToBeSigned .= $k . '=' . $v . '&';
+            if ($v !== '') {
+                if ($verify && $k != 'sign' && $k != 'sign_type') {
+                    $stringToBeSigned .= $k . '=' . $v . '&';
+                }
+                if (!$verify && $v !== '' && !is_null($v) && $k != 'sign' && '@' != substr($v, 0, 1)) {
+                    $stringToBeSigned .= $k . '=' . $v . '&';
+                }
             }
         }
         $stringToBeSigned = substr($stringToBeSigned, 0, -1);
