@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "aliases": {
-                "Pay": " Pay\\Facades\\Pay",
+                "Pay": " Pay\\Facades\\Pay"
             },
             "providers": [
                 "Pay\\Providers\\PayServiceProvider"
