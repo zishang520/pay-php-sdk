@@ -10,13 +10,23 @@
         "wxpay"
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
         "ext-curl": "*",
         "ext-openssl": "*"
     },
     "autoload": {
         "psr-4": {
-            "Pay\\": "./src"
+            "Pay\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "aliases": {
+                "Pay": " Pay\\Facades\\Pay",
+            },
+            "providers": [
+                "Pay\\Providers\\PayServiceProvider"
+            ]
         }
     }
 }
